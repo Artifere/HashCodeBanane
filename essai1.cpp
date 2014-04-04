@@ -72,8 +72,8 @@ int main(void)
                     carres.erase(make_pair(vois[i].first, vois[i].second));
                 carres.erase(pos);
                 carres.insert(make_pair(pos, max(1,3*size)));
-                            it = carres.begin();
-              //  doAgain = true;
+               //             it = carres.begin();
+                doAgain = true;
             }
 
             /*else if (size > 0 &&exists[0] && exists[2] && exists[4])
