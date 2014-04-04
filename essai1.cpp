@@ -35,10 +35,9 @@ int main(void)
             if (carte[l][c] == '#')
                 carres.insert(make_pair(make_pair(l,c),1));
 
-    bool aFusionne = true;
-    aFusionne = false;
     for (auto it = carres.begin(); it != carres.end(); ++it)
     {
+        cout << "lol" << endl;
         pair<int, int> pos = it->first;
         int size = it->second;
 
@@ -102,14 +101,13 @@ int main(void)
             it = carres.begin();
         }
     }
-}
 
 
-cout << carres.size();
-for (auto it = carres.begin(); it != carres.end(); ++it)
-cout << "PAINTSQ " << it->first.first << " " << it->first.second << " " << it->second << '\n';
+    cout << carres.size();
+    for (auto it = carres.begin(); it != carres.end(); ++it)
+        cout << "PAINTSQ " << it->first.first << " " << it->first.second << " " << it->second << '\n';
 
-return 0;
+    return 0;
 }
 
 
