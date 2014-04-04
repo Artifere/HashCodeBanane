@@ -36,28 +36,38 @@ int main(void)
                 carres.insert(make_pair(make_pair(l,c),0));
     bool doAgain = true;
     
-    
     while (doAgain)
     {
         doAgain = false;
         for (auto it = carres.begin(); it != carres.end(); ++it)
         {
             pair<int, int> pos = it->first;
+            //cout << "MA POS = " << pos.first << "," << pos.second << endl;
             int size = it->second;
 
             pair<int, int> vois[8];
             for (int i = 0; i < 8; i++)
             {
                 vois[i].first = pos.first+max(1,2*size)*dy[i];
-                vois[i].second = pos.first+max(1,2*size)*dx[i];
+                vois[i].second = pos.second+max(1,2*size)*dx[i];
             }
             bool exists[8] = {false, false, false, false, false, false, false, false};
+            
+            int cpt = 0;
             for (int i = 0; i < 8; i++)
+            {
+              //      cout << "cool pos = " << vois[i].first << "," << vois[i].second << endl;
                 if (findBis(make_pair(vois[i].first, vois[i].second), size))
+                {
+                    cpt++;
                     exists[i] = true;
+                }
+            }
+            //cout << "pos = " << it->first.first << ',' << it->first.second << "==>" << cpt << endl << endl;
             if (exists[0] && exists[1] && exists[2] && exists[3] && exists[4] && exists[5] && exists[6] &&
                     exists[7])
             {
+                //cout << "lil" << endl;
                 for (int i = 0; i < 8; i++)
                     carres.erase(make_pair(vois[i].first, vois[i].second));
                 carres.erase(pos);
@@ -114,8 +124,9 @@ int main(void)
 
     cout << carres.size() << endl;
     for (auto it = carres.begin(); it != carres.end(); ++it)
+    {
         cout << "PAINTSQ " << it->first.first << " " << it->first.second << " " << it->second << '\n';
-
+    }
     return 0;
 }
 
