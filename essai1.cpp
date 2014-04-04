@@ -34,74 +34,82 @@ int main(void)
         for (int c = 0; c < M; c++)
             if (carte[l][c] == '#')
                 carres.insert(make_pair(make_pair(l,c),1));
-
-    for (auto it = carres.begin(); it != carres.end(); ++it)
+    bool doAgain = true;
+    while (doAgain)
     {
-        cout << "lol" << endl;
-        pair<int, int> pos = it->first;
-        int size = it->second;
+        doAgain = false;
+        cout << "lol" << carres.size() << endl;
+        for (auto it = carres.begin(); it != carres.end(); ++it)
+        {
+            pair<int, int> pos = it->first;
+            int size = it->second;
 
-        pair<int, int> vois[8];
-        for (int i = 0; i < 8; i++)
-        {
-            vois[i].first = pos.first+2*size*dy[i];
-            vois[i].second = pos.first+2*size*dx[i];
-        }
-        bool exists[8] = {false, false, false, false, false, false, false, false};
-        for (int i = 0; i < 8; i++)
-            if (findBis(make_pair(vois[i].first, vois[i].second), size))
-                exists[i] = true;
-        if (exists[0] && exists[1] && exists[2] && exists[3] && exists[4] && exists[5] && exists[6] &&
-                exists[7])
-        {
+            pair<int, int> vois[8];
             for (int i = 0; i < 8; i++)
-                carres.erase(make_pair(vois[i].first, vois[i].second));
-            carres.erase(it);
-            carres.insert(make_pair(pos, 3*size));
-            it = carres.begin();
-        }
+            {
+                vois[i].first = pos.first+2*size*dy[i];
+                vois[i].second = pos.first+2*size*dx[i];
+            }
+            bool exists[8] = {false, false, false, false, false, false, false, false};
+            for (int i = 0; i < 8; i++)
+                if (findBis(make_pair(vois[i].first, vois[i].second), size))
+                    exists[i] = true;
+            if (exists[0] && exists[1] && exists[2] && exists[3] && exists[4] && exists[5] && exists[6] &&
+                    exists[7])
+            {
+                for (int i = 0; i < 8; i++)
+                    carres.erase(make_pair(vois[i].first, vois[i].second));
+                carres.erase(it);
+                carres.insert(make_pair(pos, 3*size));
+                //            it = carres.begin();
+                doAgain = true;
+            }
 
-        else if (exists[0] && exists[2] && exists[4])
-        {
-            carres.erase(make_pair(vois[0].first, vois[0].second));
-            carres.erase(make_pair(vois[2].first, vois[2].second));
-            carres.erase(make_pair(vois[2].first, vois[4].second));
-            carres.erase(it);
-            carres.insert(make_pair(make_pair(pos.first-size, pos.second-size), 2*size+1));
-            it = carres.begin();
-        }
+            else if (exists[0] && exists[2] && exists[4])
+            {
+                carres.erase(make_pair(vois[0].first, vois[0].second));
+                carres.erase(make_pair(vois[2].first, vois[2].second));
+                carres.erase(make_pair(vois[2].first, vois[4].second));
+                carres.erase(it);
+                carres.insert(make_pair(make_pair(pos.first-size, pos.second-size), 2*size+1));
+                //          it = carres.begin();
+                doAgain = true;
+            }
 
-        else if (exists[0] && exists[1] && exists[3])
-        {
-            carres.erase(make_pair(vois[0].first, vois[0].second));
-            carres.erase(make_pair(vois[1].first, vois[1].second));
-            carres.erase(make_pair(vois[3].first, vois[3].second));
-            carres.erase(it);
-            carres.insert(make_pair(make_pair(pos.first+size, pos.second-size), 2*size+1));
-            it = carres.begin();
-        }
+            else if (exists[0] && exists[1] && exists[3])
+            {
+                carres.erase(make_pair(vois[0].first, vois[0].second));
+                carres.erase(make_pair(vois[1].first, vois[1].second));
+                carres.erase(make_pair(vois[3].first, vois[3].second));
+                carres.erase(it);
+                carres.insert(make_pair(make_pair(pos.first+size, pos.second-size), 2*size+1));
+                //        it = carres.begin();
+                doAgain = true;
+            }
 
-        else if (exists[3] && exists[5] && exists[6])
-        {
-            carres.erase(make_pair(vois[3].first, vois[3].second));
-            carres.erase(make_pair(vois[5].first, vois[5].second));
-            carres.erase(make_pair(vois[6].first, vois[6].second));
-            carres.erase(it);
-            carres.insert(make_pair(make_pair(pos.first+size, pos.second+size), 2*size+1));
-            it = carres.begin();
-        }
+            else if (exists[3] && exists[5] && exists[6])
+            {
+                carres.erase(make_pair(vois[3].first, vois[3].second));
+                carres.erase(make_pair(vois[5].first, vois[5].second));
+                carres.erase(make_pair(vois[6].first, vois[6].second));
+                carres.erase(it);
+                carres.insert(make_pair(make_pair(pos.first+size, pos.second+size), 2*size+1));
+                //      it = carres.begin();
+                doAgain = true;
+            }
 
-        else if (exists[4] && exists[7] && exists[5])
-        {
-            carres.erase(make_pair(vois[4].first, vois[4].second));
-            carres.erase(make_pair(vois[7].first, vois[7].second));
-            carres.erase(make_pair(vois[5].first, vois[5].second));
-            carres.erase(it);
-            carres.insert(make_pair(make_pair(pos.first-size, pos.second+size), 2*size+1));
-            it = carres.begin();
+            else if (exists[4] && exists[7] && exists[5])
+            {
+                carres.erase(make_pair(vois[4].first, vois[4].second));
+                carres.erase(make_pair(vois[7].first, vois[7].second));
+                carres.erase(make_pair(vois[5].first, vois[5].second));
+                carres.erase(it);
+                carres.insert(make_pair(make_pair(pos.first-size, pos.second+size), 2*size+1));
+                //    it = carres.begin();
+                doAgain = true;
+            }
         }
     }
-
 
     cout << carres.size();
     for (auto it = carres.begin(); it != carres.end(); ++it)
