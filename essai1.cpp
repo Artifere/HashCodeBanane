@@ -38,7 +38,7 @@ int main(void)
     bool doAgain = true;
 
     bool tour = true;
-    srand(17);
+    srand(2207);
     while (doAgain)
     {
         doAgain = false;
@@ -127,8 +127,13 @@ for (auto it = carres.begin(); it != carres.end(); ++it)
     }
 
     cout << carres.size() << endl;
-    for (auto it = carres.begin(); it != carres.end(); ++it)
+    
+    vector<pair<pair<int, int>, int> > trucAShuffle;
+    copy(carres.begin(), carres.end(), back_inserter(trucAShuffle));
+    random_shuffle(trucAShuffle.begin(), trucAShuffle.end());
+    for (auto it = trucAShuffle.begin(); it != trucAShuffle.end(); ++it)
     {
+
         cout << "PAINTSQ " << it->first.first << " " << it->first.second << " " << it->second << '\n';
     }
     return 0;
