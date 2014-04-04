@@ -38,7 +38,6 @@ int main(void)
     while (doAgain)
     {
         doAgain = false;
-        cout << "lol" << carres.size() << endl;
         for (auto it = carres.begin(); it != carres.end(); ++it)
         {
             pair<int, int> pos = it->first;
