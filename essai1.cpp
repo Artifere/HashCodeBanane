@@ -110,7 +110,7 @@ int main(void)
         }
     }
 
-    cout << carres.size();
+    cout << carres.size() << endl;
     for (auto it = carres.begin(); it != carres.end(); ++it)
         cout << "PAINTSQ " << it->first.first << " " << it->first.second << " " << it->second << '\n';
 

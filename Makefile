@@ -8,7 +8,7 @@
 
   # the build target executable:
 	TARGET= test
-	SRC= *.cpp
+	SRC= essai1.cpp
 
 all:	$(TARGET)
 
