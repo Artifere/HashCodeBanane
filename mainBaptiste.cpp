@@ -65,7 +65,7 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (idTour < seuils[idCar2]-20 || randTruc)// || randTruc)
+            if (true)//idTour < seuils[idCar2] || randTruc)// || randTruc)
                 return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
@@ -212,9 +212,10 @@ int main(void)
             int machin = idQuatre[idCar2];
             stack<int> bidule;
             int tpsPris = 0;
-            while (machin != 4516)
+            int prevMachin = 1;
+            while (prevMachin != 4516)
             {
-                int prevMachin = machin;
+                prevMachin = machin;
                 bidule.push(machin);
                 machin = previ[machin];
                 cptt++;
@@ -222,12 +223,12 @@ int main(void)
                 {
                     if (graphTmp[machin][u].dest == prevMachin)
                     {
+                        rep += dists[graphTmp[machin][u].id];
                         tpsPris += graphTmp[machin][u].tps;
                         dists[graphTmp[machin][u].id] = 0;
                     }
                 }
             }
-            bidule.push(4516);
 
             prevDistIdGoCar = 17999;
             prevDistGoCar = 0;
