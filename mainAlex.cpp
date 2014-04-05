@@ -12,7 +12,7 @@ int idDep;
 int tpsMax;
 
 
-int dists[18000];
+int dists[18000], distsInit[18000];
 
 
 
@@ -35,7 +35,7 @@ class s_edge
 
     bool operator < (const s_edge& truc) const
     {
-        return (dists[id] > dists[truc.id]);
+        return (dists[id] < dists[truc.id]);
     }
 };
 
@@ -47,13 +47,17 @@ vector<int> parcoursCar[8];
 vector<s_edge> graph[12000];
 
 
-int goCar(int idCar, int node, int tpsLeft, int prevSize)
+int goCar(int idCar, int node, int tpsLeft, int prevSize, int prevDistId)
 {
     if (tpsLeft < 0)
     {
         parcoursCar[idCar].pop_back();
+        dists[prevDistId] = distsInit[prevDistId];
         return -prevSize;
+
     }
+
+    sort(graph[node].begin(), graph[node].end());
 
 
     int maxi = 0;
@@ -66,8 +70,10 @@ int goCar(int idCar, int node, int tpsLeft, int prevSize)
             idMax = i;
         }
     }
+    dists[graph[node][idMax].id] = 0;
     parcoursCar[idCar].push_back(graph[node][idMax].dest);
-    return maxi + goCar(idCar, graph[node][idMax].dest, tpsLeft - graph[node][idMax].tps, maxi);
+    return maxi + goCar(idCar, graph[node][idMax].dest, tpsLeft - graph[node][idMax].tps, maxi, graph[node][idMax].id);
+
 }
 
 
@@ -86,6 +92,7 @@ int main(void)
         cin >> n1 >> n2 >> bidir >> tps >> size;
 
         dists[i] = size;
+        distsInit[i] = size;
         graph[n1].push_back(s_edge(n2, tps, size, i));
         if (bidir == 2)
             graph[n2].push_back(s_edge(n1, tps, size, i));
@@ -97,7 +104,7 @@ int main(void)
     int rep = 0;
     for (int car = 0; car < nbCar; car++)
     {
-        rep+=goCar(car, idDep, tpsMax, 0);
+        rep+=goCar(car, idDep, tpsMax, 0, 17999);
     }
 
     cout << "8\n";
@@ -108,6 +115,7 @@ int main(void)
         for (auto x : parcoursCar[iCar])
             cout << x << endl;
     }
+    cerr << rep << endl;
 
 
     return 0;
