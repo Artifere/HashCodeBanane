@@ -21,7 +21,7 @@ clean:
 	rm -f $(OBJ) $(d_OBJ) $(p_OBJ)
 
 destroy: clean
-	rm -f release debug profile
+	rm -f exe exedebug profile
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
