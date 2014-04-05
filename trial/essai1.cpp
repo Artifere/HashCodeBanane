@@ -93,18 +93,6 @@ int main(void)
 
                 if (peutPasFaire[lin][col])
                 {
-                    int size  = 0;
-                    pair<int, int> vois[8];
-                pair<int, int> pos = make_pair(lin, col);
-                for (int i = 0; i < 8; i++)
-                {
-                    vois[i].first = pos.first+max(1,2*size)*dy[i];
-                    vois[i].second = pos.second+max(1,2*size)*dx[i];
-                }
-                for (int i = 0; i < 8; i++)
-                        if (vois[i].first >= 0 && vois[i].second >= 0)
-                            peutPasFaire[vois[i].first][vois[i].second] = true;
-                    
                     continue;
                 }
                 pair<int, int> pos = make_pair(lin, col);
@@ -127,6 +115,11 @@ int main(void)
                     cpt++;
                 for (int i = 0; i < 8; i++)
                 {
+                    if (peutPasFaire[vois[i].first][vois[i].second])
+                    {
+                        cpt = 0;
+                        break;
+                    }
                     if (findBis(make_pair(vois[i].first, vois[i].second), size))
                     {
                         cpt++;
@@ -136,6 +129,7 @@ int main(void)
                 //            cout << cpt << endl;
                 if (9 <= 2*cpt)
                 {
+                    peutPasFaire[pos.first][pos.second] = true;
                     for (int i = 0; i < 8; i++)
                         if (vois[i].first >= 0 && vois[i].second >= 0)
                             peutPasFaire[vois[i].first][vois[i].second] = true;
