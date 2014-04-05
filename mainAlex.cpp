@@ -14,11 +14,11 @@ int tpsMax;
 //10=>
 //int seuils[8] = {1629, 2600, 4259, 2963, 10110, 4846, 8155, 17768};
 //11 =>
-//int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
+int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
 
 
 //12
-int seuils[8] = {1676,15690,2591,37503,16640,12397,10695,3205};
+//int seuils[8] = {1676,15690,2591,37503,16640,12397,10695,3205};
 
 int dists[18000], distsInit[18000];
 
@@ -50,16 +50,16 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (idTour < seuils[idCar2]-5 || randTruc)// || randTruc)
-                return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
+            if (idTour < seuils[idCar2]-35)// ||randTruc>=1))// || randTruc)
+                return (truc.tps+50 > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
-                return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&(double)dists[id]/(double)tps+compAuxRatio(dest, 0, tps) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0, truc.tps)));
+                return (truc.tps+50 > tpsLeft2 || (tps <= tpsLeft2 &&(double)dists[id]/(double)tps+compAuxRatio(dest, 0, tps) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0, truc.tps)));
             }
         }
 };
 
-int maxRecCompAux = 12;
+int maxRecCompAux = 11;
 vector<int> idArcAux(20);
 
 
@@ -75,7 +75,7 @@ vector<s_edge> graphTmp[12000];
 int prevDistGoCar = 0, prevDistIdGoCar = 17999;
 int goCar(int idCar, int node, int tpsLeft, int prevSize)
 {
-    randTruc = rand()%2;
+    randTruc = rand()%7;
     if (tpsLeft < 0)
     {
         parcoursCar[idCar].pop_back();

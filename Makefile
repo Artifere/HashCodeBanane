@@ -1,4 +1,4 @@
-SRC= mainAlex.cpp
+SRC= mainBaptiste.cpp
 OBJ= ${SRC:.cpp=.o}
 d_OBJ= ${SRC:.cpp=_d.o}
 p_OBJ= ${SRC:.cpp=_p.o}
@@ -9,7 +9,7 @@ CXXFLAGS = $(IMPLFLAGS) -Wall -Wextra -s -O3 -std=c++11
 CXXDEBUGFLAGS = $(IMPLFLAGS) -Wall -Wextra -O0 -g -std=c++11
 CXXPROFILEFLAGS = $(IMPLFLAGS) -DVERBOSE=0 -Wall -Wextra -g -O2 -fno-inline -std=c++11
 
-all : release
+all : releaseBapt
 
 release4: $(OBJ) $(HDR) 
 	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);
@@ -21,7 +21,7 @@ release3: $(OBJ) $(HDR)
 release2: $(OBJ) $(HDR) 
 	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);
       
-release: $(OBJ) $(HDR) 
+releaseBapt: $(OBJ) $(HDR) 
 	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);
 
 debug: $(d_OBJ) $(HDR) 

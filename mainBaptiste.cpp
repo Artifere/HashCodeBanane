@@ -179,7 +179,16 @@ int compAux(int nodeA, int idRec, int tpsMis)
 {
     if (idRec == maxRecCompAux)
         return 0;
-
+    if (idCar2 == 0 && (posNodes[nodeA].first < latCentre || posNodes[nodeA].second < longCentre))
+        return 0;
+    if (idCar2 == 1 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second < longCentre))
+        return 0;
+    if (idCar2 == 2 && (posNodes[nodeA].first < latCentre || posNodes[nodeA].second > longCentre))
+        return 0;
+    if (idCar2 == 3 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second > longCentre))
+        return 0;
+    
+    
     int maxi = -1;
     const size_t nbVois = graphTmp[nodeA].size();
     for (size_t i = 0; i < nbVois; i++)
