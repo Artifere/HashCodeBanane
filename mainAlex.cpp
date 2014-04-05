@@ -2,7 +2,7 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
-
+#include <cstdlib>
 
 using namespace std;
 
@@ -13,7 +13,7 @@ int tpsMax;
 //int seuils[8] = {25005, 2317, 2499, 3148, 10458, 5181, 19567, 16095};
 //10=>
 //int seuils[8] = {1629, 2600, 4259, 2963, 10110, 4846, 8155, 17768};
-
+//11 =>
 int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
 
 
@@ -26,7 +26,7 @@ double compAuxRatio(int node, int idRec, int tpsMis);
 int idTour = 0;
 int idCar2;
 int tpsLeft2;
-
+int randTruc;
 
 
 class s_edge
@@ -47,7 +47,7 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (idTour < seuils[idCar2]-50)
+            if (true)//idTour < seuils[idCar2]-30 || randTruc)// || randTruc)
                 return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
@@ -70,6 +70,7 @@ vector<s_edge> graphTmp[12000];
 int prevDistGoCar = 0, prevDistIdGoCar = 17999;
 int goCar(int idCar, int node, int tpsLeft, int prevSize)
 {
+    randTruc = rand()%2;
     if (tpsLeft < 0)
     {
         parcoursCar[idCar].pop_back();
@@ -115,6 +116,7 @@ int goCar(int idCar, int node, int tpsLeft, int prevSize)
 
 int main(void)
 {
+    srand(17);
     cin >> nbNode >> nbArc >> tpsMax >> nbCar >> idDep;
 
     for (int i = 0; i < nbNode; i++)
