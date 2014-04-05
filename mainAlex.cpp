@@ -10,13 +10,17 @@ using namespace std;
 int nbCar, nbNode, nbArc;
 int idDep;
 int tpsMax;
-
+int seuils[8] = {1650, 2500, 4650, 38300, 18300, 26800, 7360, 3600};
 
 int dists[18000], distsInit[18000];
 
 
 
 int compAux(int node, int idRec);
+double compAuxRatio(int node, int idRec);
+int idTour = 0;
+int idCar2;
+
 
 class s_edge
 {
@@ -38,13 +42,17 @@ class s_edge
         {
 //            cerr << dest << "vs" << truc.dest << endl;
             //return (dists[id] > dists[truc.id]);
-            return dists[id]+compAux(dest, 0) > dists[truc.id]+compAux(truc.dest, 0);
-        }
+            if (idTour < seuils[idCar2])
+                return (dists[id]+compAux(dest,0) > dists[truc.id]+compAux(truc.dest, 0));
+            else
+            {
+                return (double)dists[id]/(double)tps+compAuxRatio(dest, 0) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0);
+            }
+            }
 };
 
-const int maxRecCompAux = 2;
+const int maxRecCompAux = 8;
 vector<int> idArcAux(20);
-
 
 
 pair<double, double> posNodes[12000];
@@ -62,6 +70,7 @@ int goCar(int idCar, int node, int tpsLeft, int prevSize)
         return -prevSize;
 
     }
+    idTour++;
 
     sort(graph[node].begin(), graph[node].end());
 
@@ -69,6 +78,7 @@ int goCar(int idCar, int node, int tpsLeft, int prevSize)
     int maxi = -1;
  //   int idMax = 0;
     int idArcMax = -1, idDestMax = 0, valTpsMax = 0;
+//    const int nbVois = graph[node].size();
     for (size_t i = 0; i < 1; i++)//graph[node].size(); i++)
     {
         if (dists[graph[node][i].id] > maxi)
@@ -86,7 +96,9 @@ int goCar(int idCar, int node, int tpsLeft, int prevSize)
     parcoursCar[idCar].push_back(idDestMax);
     prevDistIdGoCar = idArcMax;
     prevDistGoCar = maxi;
-    return maxi + goCar(idCar, idDestMax, tpsLeft - valTpsMax, maxi);
+    const int total = maxi + goCar(idCar, idDestMax, tpsLeft - valTpsMax, maxi);
+    idTour--;
+    return total;
 
 }
 
@@ -120,6 +132,7 @@ int main(void)
     int rep = 0;
     for (int car = 0; car < nbCar; car++)
     {
+        idCar2 = car;
         prevDistIdGoCar = 17999;
         prevDistGoCar = 0;
         rep+=goCar(car, idDep, tpsMax, 0);
@@ -129,9 +142,9 @@ int main(void)
 
     for (int iCar = 0; iCar < 8; iCar++)
     {
-        cout << parcoursCar[iCar].size()+1 << "\n" << "4516\n";
-        for (auto x : parcoursCar[iCar])
-            cout << x << endl;
+        cout << parcoursCar[iCar].size()+1 << "\n";// << "4516\n";
+        //for (auto x : parcoursCar[iCar])
+          //  cout << x << endl;
     }
     cerr << rep << endl;
 
@@ -148,12 +161,41 @@ int compAux(int nodeA, int idRec)
         return 0;
 
     int maxi = -1;
-    for (size_t i = 0; i < graphTmp[nodeA].size(); i++)
+    const size_t nbVois = graphTmp[nodeA].size();
+    for (size_t i = 0; i < nbVois; i++)
     {
         int idArc = graphTmp[nodeA][i].id, idDest = graphTmp[nodeA][i].dest;
         int prevDist = dists[idArc];
         dists[idArc] = 0;
         int tmp = prevDist + compAux(idDest, idRec+1);
+        dists[idArc] = prevDist;
+        maxi = max(tmp, maxi);
+        /*if (tmp > maxi)
+        {
+            idArcMax = graph[node][i].id;
+            idDestMax = graph[node][i].dest;
+            maxi= dists[idArcMax];
+            idMax = i;
+        }*/
+    }
+    return maxi;
+} 
+
+
+
+double compAuxRatio(int nodeA, int idRec)
+{
+    if (idRec == maxRecCompAux)
+        return 0;
+
+    int maxi = -1;
+    const size_t nbVois = graphTmp[nodeA].size();
+    for (size_t i = 0; i < nbVois; i++)
+    {
+        int idArc = graphTmp[nodeA][i].id, idDest = graphTmp[nodeA][i].dest;
+        int prevDist = dists[idArc];
+        dists[idArc] = 0;
+        int tmp = (double)prevDist/(double)graphTmp[nodeA][i].tps + compAux(idDest, idRec+1);
         dists[idArc] = prevDist;
         maxi = max(tmp, maxi);
         /*if (tmp > maxi)
