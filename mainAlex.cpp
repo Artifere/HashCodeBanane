@@ -42,11 +42,11 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (idTour < seuils[idCar2]-15)
-                return (dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps));
+            if (true)//idTour < seuils[idCar2]-15)
+                return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
-                return (double)dists[id]/(double)tps+compAuxRatio(dest, 0, tps) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0, truc.tps);
+                return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&(double)dists[id]/(double)tps+compAuxRatio(dest, 0, tps) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0, truc.tps)));
             }
         }
 };
