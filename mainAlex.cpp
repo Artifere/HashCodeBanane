@@ -14,8 +14,11 @@ int tpsMax;
 //10=>
 //int seuils[8] = {1629, 2600, 4259, 2963, 10110, 4846, 8155, 17768};
 //11 =>
-int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
+//int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
 
+
+//12
+int seuils[8] = {1676,15690,2591,37503,16640,12397,10695,3205};
 
 int dists[18000], distsInit[18000];
 
@@ -47,7 +50,7 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (true)//idTour < seuils[idCar2]-30 || randTruc)// || randTruc)
+            if (idTour < seuils[idCar2]-5 || randTruc)// || randTruc)
                 return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
@@ -56,7 +59,7 @@ class s_edge
         }
 };
 
-const int maxRecCompAux = 11;
+int maxRecCompAux = 12;
 vector<int> idArcAux(20);
 
 
@@ -66,6 +69,8 @@ vector<int> parcoursCar[8];
 vector<s_edge> graph[12000];
 
 vector<s_edge> graphTmp[12000];
+
+
 
 int prevDistGoCar = 0, prevDistIdGoCar = 17999;
 int goCar(int idCar, int node, int tpsLeft, int prevSize)
@@ -143,6 +148,8 @@ int main(void)
     for (int car = 0; car < nbCar; car++)
     {
         idCar2 = car;
+//        if (car == nbCar-1)
+//            maxRecCompAux = 12;
         prevDistIdGoCar = 17999;
         prevDistGoCar = 0;
         rep+=goCar(car, idDep, tpsMax, 0);
@@ -184,13 +191,6 @@ int compAux(int nodeA, int idRec, int tpsMis)
         int tmp = prevDist + compAux(idDest, idRec+1, tpsMis+curTps);
         dists[idArc] = prevDist;
         maxi = max(tmp, maxi);
-        /*if (tmp > maxi)
-          {
-          idArcMax = graph[node][i].id;
-          idDestMax = graph[node][i].dest;
-          maxi= dists[idArcMax];
-          idMax = i;
-          }*/
     }
     return maxi;
 } 
@@ -214,13 +214,6 @@ double compAuxRatio(int nodeA, int idRec, int tpsMis)
         int tmp = (double)prevDist/(double)graphTmp[nodeA][i].tps + compAuxRatio(idDest, idRec+1, tpsMis + graphTmp[nodeA][i].tps);
         dists[idArc] = prevDist;
         maxi = max(tmp, maxi);
-        /*if (tmp > maxi)
-          {
-          idArcMax = graph[node][i].id;
-          idDestMax = graph[node][i].dest;
-          maxi= dists[idArcMax];
-          idMax = i;
-          }*/
     }
     return maxi;
 } 
