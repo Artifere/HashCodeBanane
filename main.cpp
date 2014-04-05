@@ -24,6 +24,11 @@ class s_edge
         tps = v;
         dist = w;
     }
+
+    bool operator < (const s_edge& truc) const
+    {
+        return (dist > truc.dist);
+    }
 };
 
 pair<double, double> posNodes[12000];
@@ -48,6 +53,9 @@ int main(void)
         if (bidir == 2)
             graph[n2].push_back(s_edge(n1, tps, size));
     }
+
+    for (int i = 0; i < nbNode; i++)
+        sort(graph[i].begin(), graph[i].end());
 
     return 0;
 }
