@@ -195,7 +195,7 @@ double compAuxRatio(int nodeA, int idRec)
         int idArc = graphTmp[nodeA][i].id, idDest = graphTmp[nodeA][i].dest;
         int prevDist = dists[idArc];
         dists[idArc] = 0;
-        int tmp = (double)prevDist/(double)graphTmp[nodeA][i].tps + compAux(idDest, idRec+1);
+        int tmp = (double)prevDist/(double)graphTmp[nodeA][i].tps + compAuxRatio(idDest, idRec+1);
         dists[idArc] = prevDist;
         maxi = max(tmp, maxi);
         /*if (tmp > maxi)
