@@ -17,7 +17,7 @@ int dists[18000], distsInit[18000];
 
 
 int compAux(int node, int idRec, int tpsMis);
-double compAuxRatio(int node, int idRec);
+double compAuxRatio(int node, int idRec, int tpsMis);
 int idTour = 0;
 int idCar2;
 int tpsLeft2;
@@ -42,18 +42,16 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            //            cerr << dest << "vs" << truc.dest << endl;
-            //return (dists[id] > dists[truc.id]);
-            if (true)//idTour < seuils[idCar2])
+//            if (true)//idTour < seuils[idCar2])
                 return (dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps));
-            else
+  /*          else
             {
-                return (double)dists[id]/(double)tps+compAuxRatio(dest, 0) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0);
-            }
+                return (double)dists[id]/(double)tps+compAuxRatio(dest, 0, tps) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0, truc.tps);
+            }*/
         }
 };
 
-const int maxRecCompAux = 10;
+const int maxRecCompAux = 9;
 vector<int> idArcAux(20);
 
 
@@ -145,9 +143,9 @@ int main(void)
 
     for (int iCar = 0; iCar < 8; iCar++)
     {
-        cout << parcoursCar[iCar].size()+1 << "\n";// << "4516\n";
-        //for (auto x : parcoursCar[iCar])
-        //  cout << x << endl;
+        cout << parcoursCar[iCar].size()+1 << "\n" << "4516\n";
+        for (auto x : parcoursCar[iCar])
+          cout << x << endl;
     }
     cerr << rep << endl;
 
@@ -189,7 +187,7 @@ int compAux(int nodeA, int idRec, int tpsMis)
 
 
 
-double compAuxRatio(int nodeA, int idRec)
+double compAuxRatio(int nodeA, int idRec, int tpsMis)
 {
     if (idRec == maxRecCompAux)
         return 0;
@@ -198,10 +196,12 @@ double compAuxRatio(int nodeA, int idRec)
     const size_t nbVois = graphTmp[nodeA].size();
     for (size_t i = 0; i < nbVois; i++)
     {
+        if (tpsMis + graphTmp[nodeA][i].tps > tpsLeft2)
+            continue;
         int idArc = graphTmp[nodeA][i].id, idDest = graphTmp[nodeA][i].dest;
         int prevDist = dists[idArc];
         dists[idArc] = 0;
-        int tmp = (double)prevDist/(double)graphTmp[nodeA][i].tps + compAuxRatio(idDest, idRec+1);
+        int tmp = (double)prevDist/(double)graphTmp[nodeA][i].tps + compAuxRatio(idDest, idRec+1, tpsMis + graphTmp[nodeA][i].tps);
         dists[idArc] = prevDist;
         maxi = max(tmp, maxi);
         /*if (tmp > maxi)
