@@ -10,7 +10,7 @@ using namespace std;
 int nbCar, nbNode, nbArc;
 int idDep;
 int tpsMax;
-int seuils[8] = {1650, 2500, 4650, 38300, 18300, 26800, 7360, 3600};
+int seuils[8] = {1722, 2562, 4519, 5164, 41692, 1861, 4872, 33965};
 
 int dists[18000], distsInit[18000];
 
@@ -42,12 +42,12 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-//            if (true)//idTour < seuils[idCar2])
+            if (idTour < seuils[idCar2]-15)
                 return (dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps));
-  /*          else
+            else
             {
                 return (double)dists[id]/(double)tps+compAuxRatio(dest, 0, tps) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0, truc.tps);
-            }*/
+            }
         }
 };
 
@@ -143,9 +143,10 @@ int main(void)
 
     for (int iCar = 0; iCar < 8; iCar++)
     {
+        cerr << parcoursCar[iCar].size() << endl;
         cout << parcoursCar[iCar].size()+1 << "\n" << "4516\n";
         for (auto x : parcoursCar[iCar])
-          cout << x << endl;
+          cout << x << '\n';
     }
     cerr << rep << endl;
 
