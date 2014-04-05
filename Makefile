@@ -10,6 +10,9 @@ CXXDEBUGFLAGS = $(IMPLFLAGS) -Wall -Wextra -O0 -g -std=c++11
 CXXPROFILEFLAGS = $(IMPLFLAGS) -DVERBOSE=0 -Wall -Wextra -g -O2 -fno-inline -std=c++11
 
 all : release
+
+release2: $(OBJ) $(HDR) 
+	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);
       
 release: $(OBJ) $(HDR) 
 	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);

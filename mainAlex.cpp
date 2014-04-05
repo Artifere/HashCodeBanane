@@ -10,7 +10,9 @@ using namespace std;
 int nbCar, nbNode, nbArc;
 int idDep;
 int tpsMax;
-int seuils[8] = {1722, 2562, 4519, 5164, 41692, 1861, 4872, 33965};
+//int seuils[8] = {25005, 2317, 2499, 3148, 10458, 5181, 19567, 16095};
+
+int seuils[8] = {25005, 2317, 2499, 3148, 10458, 5181, 19567, 16095};
 
 int dists[18000], distsInit[18000];
 
@@ -42,7 +44,7 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (true)//idTour < seuils[idCar2]-15)
+            if (true)//idTour < seuils[idCar2]-100)
                 return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
@@ -51,14 +53,16 @@ class s_edge
         }
 };
 
-const int maxRecCompAux = 9;
+const int maxRecCompAux = 10;
 vector<int> idArcAux(20);
 
 
 pair<double, double> posNodes[12000];
 
 vector<int> parcoursCar[8];
-vector<s_edge> graph[12000], graphTmp[12000];
+vector<s_edge> graph[12000];
+
+vector<s_edge> graphTmp[12000];
 
 int prevDistGoCar = 0, prevDistIdGoCar = 17999;
 int goCar(int idCar, int node, int tpsLeft, int prevSize)
