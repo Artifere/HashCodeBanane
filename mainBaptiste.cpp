@@ -33,12 +33,11 @@ int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
 
 int dists[18000], distsInit[18000];
 
-<<<<<<< HEAD
-=======
+
 double latCentre=posNodes[4516].first;
 double longCentre=posNodes[4516].second;
 
->>>>>>> b154ca642cb4c24da296d554fae8d2d5cb1856ae
+
 
 int compAux(int node, int idRec, int tpsMis);
 double compAuxRatio(int node, int idRec, int tpsMis);
@@ -75,7 +74,6 @@ class s_edge
         }
 };
 
-<<<<<<< HEAD
 
 class Compare
 {
@@ -278,7 +276,7 @@ int compAux(int nodeA, int idRec, int tpsMis)
   
   if (idRec == maxRecCompAux)
         return 0;
-  if(idTour<100){
+
     if (idCar2 == 0 && (posNodes[nodeA].first < latCentre || posNodes[nodeA].second < longCentre))
         return 0;
     if (idCar2 == 1 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second < longCentre))
@@ -287,14 +285,9 @@ int compAux(int nodeA, int idRec, int tpsMis)
         return 0;
     if (idCar2 == 3 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second > longCentre))      
         return 0;
-<<<<<<< HEAD
 
 
-=======
-  }
-    
-    
->>>>>>> b154ca642cb4c24da296d554fae8d2d5cb1856ae
+
     int maxi = -1;
     const size_t nbVois = graphTmp[nodeA].size();
     for (size_t i = 0; i < nbVois; i++)
