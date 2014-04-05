@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 using namespace std;
+pair<double, double> posNodes[12000];
 
 
 int nbCar, nbNode, nbArc;
@@ -22,8 +23,8 @@ int seuils[8] = {1676,15690,2591,37503,16640,12397,10695,3205};
 
 int dists[18000], distsInit[18000];
 
-double latCentre=48.854776;
-double longCentre=2.348328;
+double latCentre=posNodes[4516].first;
+double longCentre=posNodes[4516].second;
 
 
 int compAux(int node, int idRec, int tpsMis);
@@ -61,11 +62,10 @@ class s_edge
         }
 };
 
-int maxRecCompAux = 12;
+int maxRecCompAux = 11;
 vector<int> idArcAux(20);
 
 
-pair<double, double> posNodes[12000];
 
 vector<int> parcoursCar[8];
 vector<s_edge> graph[12000];
@@ -177,16 +177,19 @@ int main(void)
 
 int compAux(int nodeA, int idRec, int tpsMis)
 {
-    if (idRec == maxRecCompAux)
+  
+  if (idRec == maxRecCompAux)
         return 0;
+  if(idTour<100){
     if (idCar2 == 0 && (posNodes[nodeA].first < latCentre || posNodes[nodeA].second < longCentre))
         return 0;
     if (idCar2 == 1 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second < longCentre))
         return 0;
     if (idCar2 == 2 && (posNodes[nodeA].first < latCentre || posNodes[nodeA].second > longCentre))
         return 0;
-    if (idCar2 == 3 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second > longCentre))
+    if (idCar2 == 3 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second > longCentre))      
         return 0;
+  }
     
     
     int maxi = -1;
@@ -210,7 +213,8 @@ int compAux(int nodeA, int idRec, int tpsMis)
 
 double compAuxRatio(int nodeA, int idRec, int tpsMis)
 {
-    if (idRec == maxRecCompAux)
+    
+  if (idRec == maxRecCompAux)
         return 0;
 
     int maxi = -1;
