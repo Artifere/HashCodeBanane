@@ -41,7 +41,7 @@ int main(void)
     while (doAgain)
     {
         doAgain = false;
-        for (auto it = carres.end(); it != carres.begin(); --it)
+        for (auto it = carres.begin(); it != carres.end(); ++it)
         {
             pair<int, int> pos = it->first;
             //cout << "MA POS = " << pos.first << "," << pos.second << endl;
@@ -76,7 +76,6 @@ int main(void)
                 carres.insert(make_pair(pos, max(1,3*size)));
                 //             it = carres.begin();
                 doAgain = true;
-                it = carres.begin();
             }
 
         }
