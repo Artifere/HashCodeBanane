@@ -1,10 +1,20 @@
+#include <stack>
+#include <queue>
 #include <iostream>
 #include <vector>
 #include <utility>
 #include <algorithm>
 #include <cstdlib>
 
+int idQuatre[4] = {0,2,1,3};
+
+
 using namespace std;
+
+
+
+#define forn(i, n) for (int i = 0; i < (n); ++i)
+#define foreach(it, a) for (__typeof((a).begin()) it = (a).begin(); it != (a).end(); ++it)
 
 
 int nbCar, nbNode, nbArc;
@@ -14,16 +24,13 @@ int tpsMax;
 //10=>
 //int seuils[8] = {1629, 2600, 4259, 2963, 10110, 4846, 8155, 17768};
 //11 =>
-//int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
+int seuils[8] = {1614, 10237, 2918, 26303, 3386, 18005, 3761, 329};
 
 
 //12
-int seuils[8] = {1676,15690,2591,37503,16640,12397,10695,3205};
+//int seuils[8] = {1676,15690,2591,37503,16640,12397,10695,3205};
 
 int dists[18000], distsInit[18000];
-
-double latCentre=48.854776;
-double longCentre=2.348328;
 
 
 int compAux(int node, int idRec, int tpsMis);
@@ -52,7 +59,7 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (idTour < seuils[idCar2]-5 || randTruc)// || randTruc)
+            if (idTour < seuils[idCar2]-20 || randTruc)// || randTruc)
                 return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
@@ -61,7 +68,18 @@ class s_edge
         }
 };
 
-int maxRecCompAux = 12;
+
+class Compare
+{
+public:
+    inline bool operator() (s_edge a, s_edge b)
+    {
+        return a.tps> b.tps;
+    }
+};
+
+
+int maxRecCompAux = 6;
 vector<int> idArcAux(20);
 
 
@@ -71,6 +89,33 @@ vector<int> parcoursCar[8];
 vector<s_edge> graph[12000];
 
 vector<s_edge> graphTmp[12000];
+
+
+double latCentre=posNodes[4516].first;//48.854776;
+double longCentre=posNodes[4516].second;//2.348328;
+
+
+void dijkstra(vector<int> &prev, vector<int> &disti, int source, int dest) {
+    priority_queue<s_edge, vector<s_edge>, Compare> file;
+    vector<bool> mark(18000, false);
+    prev.assign(18000, -1);
+    disti.assign(18000, 1e8);
+    file.push(s_edge(source, 0, source, 0));
+    while (not file.empty() && mark[dest] == false) {
+        s_edge t = file.top(); file.pop();
+        if (mark[t.dest]) continue;
+        prev[t.dest] = t.dist;
+        disti[t.dest] = t.tps; // distiance form source is now correct
+        mark[t.dest] = true;
+        forn(i, graphTmp[t.dest].size()) {
+            s_edge f = graphTmp[t.dest][i];
+            f.tps += t.tps;
+            f.dist = t.dest;
+            if (disti[f.dest] > f.tps) file.push(f);
+        }
+    }
+}
+
 
 
 
@@ -147,25 +192,70 @@ int main(void)
         sort(graph[i].begin(), graph[i].end());
 
     int rep = 0;
+    cout << "8\n";
     for (int car = 0; car < nbCar; car++)
     {
         idCar2 = car;
-//        if (car == nbCar-1)
-//            maxRecCompAux = 12;
-        prevDistIdGoCar = 17999;
-        prevDistGoCar = 0;
-        rep+=goCar(car, idDep, tpsMax, 0);
+        //        if (car == nbCar-1)
+        //            maxRecCompAux = 12;
+
+        if (idCar2 < 5)
+        {
+            vector<int> previ(18000), disti(180000);
+            dijkstra(previ, disti, 4516, idQuatre[idCar2]);
+
+            int cptt = 0;
+            int machin = idQuatre[idCar2];
+            stack<int> bidule;
+            int tpsPris = 0;
+            while (machin != 4516)
+            {
+                int prevMachin = machin;
+                bidule.push(machin);
+                machin = previ[machin];
+                cptt++;
+                for (int u = 0; u < graphTmp[machin].size(); u++)
+                {
+                    if (graphTmp[machin][u].dest == prevMachin)
+                    {
+                        tpsPris += graphTmp[machin][u].tps;
+                        dists[graphTmp[machin][u].id] = 0;
+                    }
+                }
+            }
+
+            prevDistIdGoCar = 17999;
+            prevDistGoCar = 0;
+            rep+=goCar(car, idQuatre[idCar2], tpsMax-tpsPris, 0);
+
+            cout << parcoursCar[idCar2].size()+1+cptt << "\n";
+            while (!bidule.empty())
+            {
+                cout << bidule.top();
+                bidule.pop();
+            }
+
+            for (auto x : parcoursCar[idCar2])
+                cout << x << '\n';
+            cerr << parcoursCar[idCar2].size() << endl;
+        }
+
+        else
+        {
+            prevDistIdGoCar = 17999;
+            prevDistGoCar = 0;
+            rep+=goCar(idCar2, idDep, tpsMax, 0);
+            cerr << parcoursCar[idCar2].size() << endl;
+            cout << parcoursCar[idCar2].size()+1 << "\n" << "4516\n";
+            for (auto x : parcoursCar[idCar2])
+                cout << x << '\n';
+        }
+
+
+
     }
 
-    cout << "8\n";
 
-    for (int iCar = 0; iCar < 8; iCar++)
-    {
-        cerr << parcoursCar[iCar].size() << endl;
-        cout << parcoursCar[iCar].size()+1 << "\n" << "4516\n";
-        for (auto x : parcoursCar[iCar])
-          cout << x << '\n';
-    }
     cerr << rep << endl;
 
 
@@ -187,8 +277,8 @@ int compAux(int nodeA, int idRec, int tpsMis)
         return 0;
     if (idCar2 == 3 && (posNodes[nodeA].first > latCentre || posNodes[nodeA].second > longCentre))
         return 0;
-    
-    
+
+
     int maxi = -1;
     const size_t nbVois = graphTmp[nodeA].size();
     for (size_t i = 0; i < nbVois; i++)
