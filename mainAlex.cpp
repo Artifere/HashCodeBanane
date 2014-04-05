@@ -12,7 +12,7 @@ int idDep;
 int tpsMax;
 //int seuils[8] = {25005, 2317, 2499, 3148, 10458, 5181, 19567, 16095};
 
-int seuils[8] = {25005, 2317, 2499, 3148, 10458, 5181, 19567, 16095};
+int seuils[8] = {1629, 2600, 4259, 2963, 10110, 4846, 8155, 17768};
 
 int dists[18000], distsInit[18000];
 
@@ -44,7 +44,7 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-            if (true)//idTour < seuils[idCar2]-100)
+            if (true)//idTour < seuils[idCar2]-3)
                 return (truc.tps > tpsLeft2 || (tps <= tpsLeft2 &&dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps)));
             else
             {
@@ -53,7 +53,7 @@ class s_edge
         }
 };
 
-const int maxRecCompAux = 10;
+const int maxRecCompAux = 11;
 vector<int> idArcAux(20);
 
 

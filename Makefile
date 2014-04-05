@@ -11,6 +11,9 @@ CXXPROFILEFLAGS = $(IMPLFLAGS) -DVERBOSE=0 -Wall -Wextra -g -O2 -fno-inline -std
 
 all : release
 
+release3: $(OBJ) $(HDR) 
+	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);
+
 release2: $(OBJ) $(HDR) 
 	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);
       
