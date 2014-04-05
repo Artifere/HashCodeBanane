@@ -1,4 +1,4 @@
-SRC= main.cpp
+SRC= mainAlex.cpp
 OBJ= ${SRC:.cpp=.o}
 d_OBJ= ${SRC:.cpp=_d.o}
 p_OBJ= ${SRC:.cpp=_p.o}
