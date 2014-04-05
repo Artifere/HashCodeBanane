@@ -97,8 +97,6 @@ vector<s_edge> graph[12000];
 vector<s_edge> graphTmp[12000];
 
 
-double latCentre=posNodes[4516].first;//48.854776;
-double longCentre=posNodes[4516].second;//2.348328;
 
 
 void dijkstra(vector<int> &prev, vector<int> &disti, int source, int dest) {
@@ -229,6 +227,7 @@ int main(void)
                     }
                 }
             }
+            bidule.push(4516);
 
             prevDistIdGoCar = 17999;
             prevDistGoCar = 0;
@@ -237,7 +236,7 @@ int main(void)
             cout << parcoursCar[idCar2].size()+1+cptt << "\n";
             while (!bidule.empty())
             {
-                cout << bidule.top();
+                cout << bidule.top() << '\n';
                 bidule.pop();
             }
 
