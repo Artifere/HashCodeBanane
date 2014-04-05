@@ -16,10 +16,12 @@ int dists[18000], distsInit[18000];
 
 
 
-int compAux(int node, int idRec);
+int compAux(int node, int idRec, int tpsMis);
 double compAuxRatio(int node, int idRec);
 int idTour = 0;
 int idCar2;
+int tpsLeft2;
+
 
 
 class s_edge
@@ -40,15 +42,15 @@ class s_edge
 
         inline bool operator < (const s_edge& truc) const
         {
-//            cerr << dest << "vs" << truc.dest << endl;
+            //            cerr << dest << "vs" << truc.dest << endl;
             //return (dists[id] > dists[truc.id]);
-            if (idTour < seuils[idCar2])
-                return (dists[id]+compAux(dest,0) > dists[truc.id]+compAux(truc.dest, 0));
+            if (true ||idTour < seuils[idCar2])
+                return (dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, tps));
             else
             {
                 return (double)dists[id]/(double)tps+compAuxRatio(dest, 0) > (double)dists[truc.id]/(double)tps+compAuxRatio(truc.dest, 0);
             }
-            }
+        }
 };
 
 const int maxRecCompAux = 8;
@@ -70,15 +72,16 @@ int goCar(int idCar, int node, int tpsLeft, int prevSize)
         return -prevSize;
 
     }
+    tpsLeft2 = tpsLeft;
     idTour++;
 
     sort(graph[node].begin(), graph[node].end());
 
 
     int maxi = -1;
- //   int idMax = 0;
+    //   int idMax = 0;
     int idArcMax = -1, idDestMax = 0, valTpsMax = 0;
-//    const int nbVois = graph[node].size();
+    //    const int nbVois = graph[node].size();
     for (size_t i = 0; i < 1; i++)//graph[node].size(); i++)
     {
         if (dists[graph[node][i].id] > maxi)
@@ -87,7 +90,7 @@ int goCar(int idCar, int node, int tpsLeft, int prevSize)
             idDestMax = graph[node][i].dest;
             valTpsMax = graph[node][i].tps;
             maxi= dists[idArcMax];
-//            idMax = i;
+            //            idMax = i;
         }
     }
     if (idArcMax == -1)
@@ -123,7 +126,7 @@ int main(void)
         if (bidir == 2)
             graph[n2].push_back(s_edge(n1, tps, size, i));
     }
-    
+
     for (int i = 0; i < nbNode; i++)
         graphTmp[i] = graph[i];
     for (int i = 0; i < nbNode; i++)
@@ -144,7 +147,7 @@ int main(void)
     {
         cout << parcoursCar[iCar].size()+1 << "\n";// << "4516\n";
         //for (auto x : parcoursCar[iCar])
-          //  cout << x << endl;
+        //  cout << x << endl;
     }
     cerr << rep << endl;
 
@@ -155,7 +158,7 @@ int main(void)
 
 
 
-int compAux(int nodeA, int idRec)
+int compAux(int nodeA, int idRec, int tpsMis)
 {
     if (idRec == maxRecCompAux)
         return 0;
@@ -164,19 +167,22 @@ int compAux(int nodeA, int idRec)
     const size_t nbVois = graphTmp[nodeA].size();
     for (size_t i = 0; i < nbVois; i++)
     {
+        int curTps = graphTmp[nodeA][i].tps;
+        if (tpsMis + curTps > tpsLeft2)
+            continue;
         int idArc = graphTmp[nodeA][i].id, idDest = graphTmp[nodeA][i].dest;
         int prevDist = dists[idArc];
         dists[idArc] = 0;
-        int tmp = prevDist + compAux(idDest, idRec+1);
+        int tmp = prevDist + compAux(idDest, idRec+1, tpsMis+curTps);
         dists[idArc] = prevDist;
         maxi = max(tmp, maxi);
         /*if (tmp > maxi)
-        {
-            idArcMax = graph[node][i].id;
-            idDestMax = graph[node][i].dest;
-            maxi= dists[idArcMax];
-            idMax = i;
-        }*/
+          {
+          idArcMax = graph[node][i].id;
+          idDestMax = graph[node][i].dest;
+          maxi= dists[idArcMax];
+          idMax = i;
+          }*/
     }
     return maxi;
 } 
@@ -199,12 +205,12 @@ double compAuxRatio(int nodeA, int idRec)
         dists[idArc] = prevDist;
         maxi = max(tmp, maxi);
         /*if (tmp > maxi)
-        {
-            idArcMax = graph[node][i].id;
-            idDestMax = graph[node][i].dest;
-            maxi= dists[idArcMax];
-            idMax = i;
-        }*/
+          {
+          idArcMax = graph[node][i].id;
+          idDestMax = graph[node][i].dest;
+          maxi= dists[idArcMax];
+          idMax = i;
+          }*/
     }
     return maxi;
 } 
