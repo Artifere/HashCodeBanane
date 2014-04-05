@@ -44,7 +44,7 @@ class s_edge
         {
             //            cerr << dest << "vs" << truc.dest << endl;
             //return (dists[id] > dists[truc.id]);
-            if (true ||idTour < seuils[idCar2])
+            if (true)//idTour < seuils[idCar2])
                 return (dists[id]+compAux(dest,0, tps) > dists[truc.id]+compAux(truc.dest, 0, truc.tps));
             else
             {
@@ -53,7 +53,7 @@ class s_edge
         }
 };
 
-const int maxRecCompAux = 9;
+const int maxRecCompAux = 10;
 vector<int> idArcAux(20);
 
 
