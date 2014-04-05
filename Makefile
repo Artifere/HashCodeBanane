@@ -1,19 +1,33 @@
-# the compiler: gcc for C program, define as g++ for C++
- 	CC= g++
+SRC= essai.cpp
+OBJ= ${SRC:.cpp=.o}
+d_OBJ= ${SRC:.cpp=_d.o}
+p_OBJ= ${SRC:.cpp=_p.o}
+CXX	 = g++
+LFLAGS   = -lm
+#IMPLFLAGS= -DCLAUSE=$(CLAUSE) -DCHOOSE=$(CHOOSE) -DVERBOSE=$(VERBOSE) -DINIT_SORT=$(INIT_SORT) -DINTERACT=$(INTERACT)
+CXXFLAGS = $(IMPLFLAGS) -Wall -Wextra -s -O2 -std=c++11
+CXXDEBUGFLAGS = $(IMPLFLAGS) -Wall -Wextra -O0 -g -std=c++11
+CXXPROFILEFLAGS = $(IMPLFLAGS) -DVERBOSE=0 -Wall -Wextra -g -O2 -fno-inline -std=c++11
 
-  # compiler flags:
-  #  -g    adds debugging information to the executable file
-  #  -Wall turns on most, but not all, compiler warnings
-	CFLAGS= -std=c++11 -O2 -s -Wall
+all : release
+      
+release: $(OBJ) $(HDR) 
+	${CXX} $(CXXFLAGS) -o $@ $(OBJ) $(LFLAGS)  $(LIB);
 
-  # the build target executable:
-	TARGET= exeA
-	SRC= essai1.cpp
+debug: $(d_OBJ) $(HDR) 
+	${CXX} $(CXXDEBUGFLAGS) -o $@ $(d_OBJ) $(LFLAGS)  $(LIB);
 
-all:	$(TARGET)
+clean: 
+	rm -f $(OBJ) $(d_OBJ) $(p_OBJ)
 
-$(TARGET):	$(SRC)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
+destroy: clean
+	rm -f release debug profile
 
-clean:
-	$(RM) $(TARGET)
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+     
+%_p.o: %.cpp
+	$(CXX) $(CXXPROFILEFLAGS) -c $< -o $@
+
+%_d.o: %.cpp
+	$(CXX) $(CXXDEBUGFLAGS) -c $< -o $@

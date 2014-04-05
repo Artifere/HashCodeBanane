@@ -76,6 +76,7 @@ int main(void)
                 carres.insert(make_pair(pos, max(1,3*size)));
                 //             it = carres.begin();
                 doAgain = true;
+                it = carres.begin();
             }
 
         }
@@ -124,6 +125,11 @@ int main(void)
                     {
                         cpt++;
                         exists[i] = true;
+                    }
+                    else if (carres.find(vois[i]) != carres.end() && carres.at(vois[i]) > 0)
+                    {
+                        cpt = 0;
+                        break;
                     }
                 }
                 //            cout << cpt << endl;

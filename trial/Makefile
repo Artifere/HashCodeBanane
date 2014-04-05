@@ -4,7 +4,7 @@
   # compiler flags:
   #  -g    adds debugging information to the executable file
   #  -Wall turns on most, but not all, compiler warnings
-	CFLAGS= -std=c++11 -O2 -s -Wall
+	CFLAGS= -std=c++11  -O2 -s -Wall
 
   # the build target executable:
 	TARGET= uuu
